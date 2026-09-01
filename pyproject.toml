@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "helo-env"
+version = "0.1.0"
+description = "Gymnasium environment wrapping a C-based helicopter flight dynamics model, with support for scripted controllers and maneuver entry, for use in torch-based RL training."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+    {name = "Joseph Horn", email = "jfh19@psu.edu"},
+    {name = "Callen Reid", email = "cjr5960@psu.edu"}
+]
+keywords = ["reinforcement-learning", "gymnasium", "helicopter", "flight-dynamics", "control", "torch"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "gymnasium>=0.29",
+    "numpy>=1.24",
+    "torch>=2.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov",
+    "ruff",
+    "mypy",
+    "build",
+]
+
+[project.urls]
+Repository = "https://github.com/<your-org-or-user>/HeloEnv" # TODO: Update once I get into github.
+
+# Gymnasium environments are registered in src/helo_env/__init__.py via gymnasium.register()
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+helo_env = ["native/build/*.so", "native/build/*.dylib", "native/build/*.dll"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+src = ["src"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true

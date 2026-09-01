@@ -1,0 +1,58 @@
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+pip-wheel-metadata/
+*.egg
+
+# C / native build artifacts
+src/helo_env/native/build/*
+!src/helo_env/native/build/.gitkeep
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+CMakeCache.txt
+CMakeFiles/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Type checkers / linters
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Torch / experiment artifacts
+*.pt
+*.pth
+runs/
+logs/
+wandb/
+outputs/
