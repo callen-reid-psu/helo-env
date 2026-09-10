@@ -21,9 +21,7 @@ _BUILD_DIR = Path(__file__).parent / "build"
 def _library_filename() -> str:
     system = platform.system()
     if system == "Windows":
-        return "helo_model.dll"
-    if system == "Darwin":
-        return "libhelo_model.dylib"
+        return "libH60Sim.lib"
     return "libhelo_model.so"
 
 
