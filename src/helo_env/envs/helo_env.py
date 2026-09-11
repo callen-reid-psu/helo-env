@@ -72,7 +72,7 @@ class HeloEnv(gym.Env):
             The observations and info from the reset
         """
         super().reset(seed=seed)
-
+        # here is where I need to randomize initial conditions or set them
         state = self._sim.reset()
         obs = self._get_obs()
         info = self._get_info()
