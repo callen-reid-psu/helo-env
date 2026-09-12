@@ -15,6 +15,8 @@
 # Example:
 #   ./scripts/import_coder_output.sh ~/matlab/MyModel_ert_rtw
 #   ./scripts/import_coder_output.sh ~/matlab/MyModel_ert_rtw /usr/local/MATLAB/R2024a
+# Windows Example:
+#   ./scripts/import_coder_output.sh "$(wslpath 'C:/Users/Me/matlab/MyModel_ert_rtw')"
 #
 set -euo pipefail
 
@@ -46,6 +48,7 @@ INCLUDE_DEST="$NATIVE_DIR/include"
 
 mkdir -p "$SRC_DEST" "$INCLUDE_DEST"
 
+echo "== Importing Model =="
 echo "Project root : $PROJECT_ROOT"
 echo "Coder output : $CODER_DIR"
 echo "Dest src     : $SRC_DEST"
@@ -53,7 +56,7 @@ echo "Dest include : $INCLUDE_DEST"
 echo
 
 # ---------------------------------------------------------------------------
-# Copy source files
+# Copy source files (top-level of CODER_DIR only, no recursion)
 # ---------------------------------------------------------------------------
 copy_matches() {
     local pattern="$1"
@@ -63,17 +66,17 @@ copy_matches() {
     while IFS= read -r -d '' file; do
         cp -v "$file" "$dest/"
         count=$((count + 1))
-    done < <(find "$CODER_DIR" -type f -iname "$pattern" -print0)
+    done < <(find "$CODER_DIR" -maxdepth 1 -type f -iname "$pattern" -print0)
 
     echo "Copied $count file(s) matching '$pattern' to $dest"
 }
 
-echo "== Copying .c/.cpp files =="
+echo "== Copying .c/.cpp files (top-level only) =="
 copy_matches "*.c" "$SRC_DEST"
 copy_matches "*.cpp" "$SRC_DEST"
 echo
 
-echo "== Copying .h/.hpp files =="
+echo "== Copying .h/.hpp files (top-level only) =="
 copy_matches "*.h" "$INCLUDE_DEST"
 copy_matches "*.hpp" "$INCLUDE_DEST"
 echo
@@ -149,7 +152,7 @@ fi
 
 # Fallback: sometimes tmwtypes.h ships alongside the coder output itself
 if [[ ! -f "$INCLUDE_DEST/tmwtypes.h" ]]; then
-    FOUND_LOCAL="$(find "$CODER_DIR" -type f -iname "tmwtypes.h" -print -quit)"
+    FOUND_LOCAL="$(find "$CODER_DIR" -maxdepth 1 -type f -iname "tmwtypes.h" -print -quit)"
     if [[ -n "$FOUND_LOCAL" ]]; then
         cp -v "$FOUND_LOCAL" "$INCLUDE_DEST/"
         echo "tmwtypes.h copied from coder output directory."
@@ -169,4 +172,4 @@ EOF
 fi
 
 echo
-echo "Done. Review $SRC_DEST and $INCLUDE_DEST, then update native/CMakeLists.txt if needed."
+echo "Done."
