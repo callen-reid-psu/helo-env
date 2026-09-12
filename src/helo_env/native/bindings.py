@@ -302,7 +302,7 @@ class HeloModel:
         return np.ctypeslib.as_array(self._x).copy() #NOTE: This output should be whatever the
         # observation space is. Whether its all of x all of y or a subset.
 
-    def step(self, action: np.ndarray) -> tuple[np.ndarray, np.ndarray, bool]:
+    def step(self, action: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """Advance one dt using StepH60. `action` must have length NCTRLS."""
         self._u[:] = action
 
@@ -319,7 +319,5 @@ class HeloModel:
         next_state = np.ctypeslib.as_array(self._xnew).copy()
         outputs = np.ctypeslib.as_array(self._ynew).copy()
 
-        terminate = False # NOTE: Need to figure out how we want to handle termination logic
-        # It is probably faster in the c (meaning a modification to the model) will need to see
-        # if the speed is worth since it will be quicker to implement in python.
-        return next_state, outputs, terminate
+        
+        return next_state, outputs
