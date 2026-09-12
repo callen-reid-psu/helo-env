@@ -47,11 +47,11 @@ class FlightConditions(ctypes.Structure):
     _fields_ = [("vx_trim",ctypes.c_double),
                 ("vy_trim",ctypes.c_double),
                 ("vz_trim",ctypes.c_double),
-                ("psid_trim",ctypes.c_double), #NOTE: What is PSIDTRIM? Yaw rate?
-                ("psi_trim",ctypes.c_double), #NOTE: psi_trim is yaw trim correct
-                ("z_trim",ctypes.c_double), #NOTE: Shortened ALTRIM to z_trim
-                ("x_trim",ctypes.c_double), #NOTE: Shortened XNTRIM to x_trim (defined in comment using ned frame)
-                ("y_trim",ctypes.c_double), #NOTE: Shortened YETRIM to y_trim ^
+                ("psid_trim",ctypes.c_double),
+                ("psi_trim",ctypes.c_double), 
+                ("z_trim",ctypes.c_double), 
+                ("x_trim",ctypes.c_double), 
+                ("y_trim",ctypes.c_double), 
                 ]
 
 
