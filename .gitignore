@@ -11,20 +11,10 @@ __pycache__/
 *.egg-info/
 .eggs/
 dist/
-build/
 pip-wheel-metadata/
 *.egg
 
 # C / native build artifacts
-src/helo_env/native/build/*
-!src/helo_env/native/build/.gitkeep
-*.o
-*.obj
-*.so
-*.dylib
-*.dll
-*.a
-*.lib
 CMakeCache.txt
 CMakeFiles/
 
