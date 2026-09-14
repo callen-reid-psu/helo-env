@@ -25,7 +25,7 @@ NOUT = 7
 def _library_filename() -> str:
     system = platform.system()
     if system == "Windows":
-        return "H60Sim.dll"
+        return "libhelo_model.dll"
     return "libhelo_model.so"
 
 
