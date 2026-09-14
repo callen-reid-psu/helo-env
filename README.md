@@ -3,6 +3,9 @@
 A [Gymnasium](https://gymnasium.farama.org/) environment wrapping a C-based helicopter flight dynamics model, for training reinforcement learning agents
 with PyTorch.
 
+## Version
+1.0.0
+
 ## Project Layout
 
 ```
@@ -119,4 +122,4 @@ obs, reward, terminated, truncated, info = env.step(action)
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+Academic Use — see [LICENSE](LICENSE).
