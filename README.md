@@ -1,7 +1,6 @@
 # HeloEnv
 
-A [Gymnasium](https://gymnasium.farama.org/) environment wrapping a C-based
-helicopter flight dynamics model, for training reinforcement learning agents
+A [Gymnasium](https://gymnasium.farama.org/) environment wrapping a C-based helicopter flight dynamics model, for training reinforcement learning agents
 with PyTorch.
 
 ## Project Layout
@@ -31,46 +30,29 @@ HeloEnv/
 ```
 
 ## Setup
+Note: Setup instructions and scripts have only been verified on a system running WSL and Windows. 
+
 1. **Create and activate the virtual environment**:
 
-   Open a bash terminal in VSCode and run the following:
-
+   Open a terminal in VSCode and run the following:
+   
+   **Bash**:
    ```bash
    python3 -m venv .venv
-   source .venv/bin/activate      # Windows: .venv\Scripts\activate
+   source .venv/bin/activate
+   ```
+   **Powershell**:
+   ```powershell
+   python3 -m venv .venv
+   .\.venv\Scripts\activate
    ```
 
-   If you do not have bash intalled see Git Bash Setup below.
-
-2. **Import the C model**:
-   ```bash
-   bash scripts/import_model.sh ~/{MODEL_PATH}
-   ```
-   For Windows paths:
-   ```bash
-   bash scripts/import_coder_output.sh "$(wslpath '{WINDOWS_PATH}')"
-   ```
-   This imports all C files in the parent directory into `src/helo_env/native/src` and all header files in the parent directory into `src/helo_env/native/src`.
-
-3. **Verify CMake is installed**:
-   ```bash
-   cmake --version
-   ```
-   If it is not installed download from https://cmake.org/download/ and check "Add CMake to system PATH" during install.
-4. **Build the native shared library**:
-   ```bash
-   bash scripts/build_native.sh
-   ```
-   This runs CMake against `src/helo_env/native/` and outputs a shared library
-   (`.so`/`.dylib`/`.dll`) into `src/helo_env/native/build/`, which is loaded
-   at runtime via `ctypes` in `src/helo_env/native/bindings.py`.
-
-5. **Install the package (editable, with dev dependencies)**:
+2. **Install the package (editable, with dev dependencies)**:
    ```bash
    pip install -e ".[dev]"
    ```
 
-6. **Verify the environment registers and steps correctly**:
+3. **Verify the environment registers and steps correctly**:
    ```bash
    pytest tests/
    ```
@@ -86,6 +68,54 @@ obs, info = env.reset()
 action = env.action_space.sample()
 obs, reward, terminated, truncated, info = env.step(action)
 ```
+
+## Development
+**Updating the C model**
+1. **Replacing the Source Files**:
+   1. Create a new branch for the updated model. 
+   2. Remove all `.c` files from `src/helo_env/native/src`. 
+   3. **Excluding** `tmwtypes.h` remove all header files from `src/helo_env/native/include`. 
+   4. Proceed with the following commands based on your opperating system.
+
+   **Bash**
+   ```bash
+   bash scripts/import_model.sh ~/{MODEL_PATH}                       # Linux Paths
+   bash scripts/import_coder_output.sh "$(wslpath '{WINDOWS_PATH}')" # Windows Paths
+   ```
+   **Powershell**
+   ```powershell
+   .\scripts\Import-Model.ps1
+   ```
+2. **Verify Required Packages are installed**:
+   Verify Cmake:
+   ```bash
+   cmake --version
+   
+   ```
+
+   If it is not installed download from https://cmake.org/download/ and check "Add CMake to system PATH" during install.
+
+   Verify gcc and mingw32-make:
+   ```bash
+   gcc --version
+   mingw32-make --version
+   ```
+
+   If they are not installed download from https://www.msys2.org/ and follow instructions on the page.
+   
+3. **Build the native library**:
+   If an existing `cmaker-build` folder is present in the `native` directory delete the folder then run.
+   **Linux**:
+   ```bash
+   bash scripts/build_native.sh
+   ```
+   **Windows**:
+   ```powershell
+   .\scripts\Build-Native.ps1 -Generator "MinGW Makefiles"
+   ```
+   This runs CMake against `src/helo_env/native/` and outputs a shared library
+   (`.so`/`.dylib`/`.dll`) into `src/helo_env/native/build/`, which is loaded
+   at runtime via `ctypes` in `src/helo_env/native/bindings.py`.
 
 ## License
 
